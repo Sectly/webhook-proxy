@@ -577,6 +577,7 @@ app.post('/api/webhooks/:id/:token', webhookPostRatelimit, webhookInvalidPostRat
 
     const wait = req.query.wait ?? false;
     const threadId = req.query.thread_id;
+    const withComponents = req.query.with_components ?? false;
 
     const axios = await getClient(req.params.id);
 
@@ -591,6 +592,8 @@ app.post('/api/webhooks/:id/:token', webhookPostRatelimit, webhookInvalidPostRat
     const response = await axios[0].post(
         `https://discord.com/api/webhooks/${req.params.id}/${req.params.token}?wait=${wait}${
             threadId ? '&thread_id=' + threadId : ''
+        }${
+            withComponents ? '&with_components=' + withComponents : ''
         }`,
         body,
         {
